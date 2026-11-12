@@ -1,0 +1,17 @@
+# Entorno virtual
+ev_pn/
+venv/
+
+# Archivos de Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Base de datos local (se genera después)
+db.sqlite3
+
+# Archivos multimedia (imágenes que subamos)
+media/
+
+# Variables de entorno
+.env
