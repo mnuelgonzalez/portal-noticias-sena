@@ -1,3 +1,8 @@
 from django.shortcuts import render
+from .models import Noticia
 
-# Create your views here.
+def inicio(request):
+    # Obtenemos todas las noticias ordenadas por fecha mas reciente primero
+    noticias = Noticia.objects.all().order_by('-fecha')
+    return render(request, 'app_noticias/inicio.html', {'noticias': noticias})
+

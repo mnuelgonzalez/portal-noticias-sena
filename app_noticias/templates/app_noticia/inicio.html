@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal de Noticias - SENA Centro de Automatización Industrial</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .card-img-top {
+            height: 200px;
+            object-fit: cover;
+        }
+        .hero-section {
+            background-color: #39a900; /* Verde SENA */
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Encabezado -->
+    <header class="hero-section text-center">
+        <div class="container">
+            <h1>Centro de Automatización Industrial</h1>
+            <p class="lead">Regional Valle - Portal de Noticias</p>
+            <a href="/admin" class="btn btn-light btn-sm mt-2">Acceso Administrativo</a>
+        </div>
+    </header>
+
+    <!-- Contenido Principal -->
+    <main class="container mb-5">
+        <h2 class="mb-4 text-center">Últimas Noticias</h2>
+        
+        {% if noticias %}
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                {% for noticia in noticias %}
+                <div class="col">
+                    <div class="card h-100 shadow-sm">
+                        {% if noticia.imagen %}
+                            <img src="{{ noticia.imagen.url }}" class="card-img-top" alt="{{ noticia.titulo }}">
+                        {% else %}
+                            <img src="https://via.placeholder.com/400x200?text=Sin+Imagen" class="card-img-top" alt="Sin imagen">
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">{{ noticia.titulo }}</h5>
+                            <p class="card-text text-muted small">
+                                📅 {{ noticia.fecha }} | 📍 {{ noticia.lugar }}
+                            </p>
+                            <p class="card-text">{{ noticia.descripcion|truncatewords:30 }}</p>
+                        </div>
+                        <div class="card-footer bg-white border-top-0">
+                            <button class="btn btn-success w-100" data-bs-toggle="modal" data-bs-target="#modal{{ noticia.id }}">
+                                Leer más
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal para ver la noticia completa -->
+                <div class="modal fade" id="modal{{ noticia.id }}" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">{{ noticia.titulo }}</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                {% if noticia.imagen %}
+                                    <img src="{{ noticia.imagen.url }}" class="img-fluid rounded mb-3 w-100" alt="{{ noticia.titulo }}">
+                                {% endif %}
+                                <p><strong>📅 Fecha:</strong> {{ noticia.fecha }}</p>
+                                <p><strong>📍 Lugar:</strong> {{ noticia.lugar }}</p>
+                                <p>{{ noticia.descripcion|linebreaks }}</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="alert alert-info text-center">
+                No hay noticias publicadas aún.
+            </div>
+        {% endif %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white text-center py-3">
+        <p class="mb-0">© 2026 SENA Centro de Automatización Industrial - Regional Valle</p>
+    </footer>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
